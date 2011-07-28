@@ -82,8 +82,8 @@ end
 
 function love.draw()
 	love.graphics.setColor(255,255,255,255)
-	love.graphics.drawq(imgBG,bg_quad,0,0)
-	love.graphics.drawq(imgBG,bg_quad,296,0)
+	-- draw background
+	love.graphics.drawq(imgBG,bg_quad,0,0,0,592,1)
 	love.graphics.drawq(imgBG,logo_quad,32,21)
 	-- draw icons
 	love.graphics.drawq(imgTiles,quad[0],CELLW,PIANO_OFF_Y*CELLH)
