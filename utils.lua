@@ -1,5 +1,6 @@
 function loadResources()
 	imgTiles = love.graphics.newImage("res/tiles.png")
+	imgBG = love.graphics.newImage("res/bg.png")
 	imgTiles:setFilter("nearest","nearest")
 	createQuads()
 

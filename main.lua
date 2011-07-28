@@ -2,8 +2,8 @@ require("defines")
 require("utils")
 
 function love.load()
-	love.graphics.setMode(37*CELLW,23*CELLW)
-	love.graphics.setBackgroundColor(bgcolor)
+	love.graphics.setMode(37*CELLW,26*CELLW)
+	--love.graphics.setBackgroundColor(bgcolor)
 	love.graphics.setLineWidth(2)
 	math.randomseed(os.time())
 	loadResources()
@@ -92,6 +92,7 @@ end
 
 function love.draw()
 	love.graphics.setColor(255,255,255,255)
+	love.graphics.draw(imgBG,0,0)
 	-- draw icons
 	love.graphics.drawq(imgTiles,quad[0],CELLW,PIANO_OFF_Y*CELLH)
 	love.graphics.drawq(imgTiles,quad[8],CELLW,KICK_OFF_Y*CELLH)
