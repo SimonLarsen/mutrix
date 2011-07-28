@@ -50,40 +50,32 @@ function love.update(dt)
 	end
 	-- check mouse
 	if love.mouse.isDown('l','r') then
-		local mx = love.mouse.getX()
-		local my = love.mouse.getY()
 		local val = 1
 		if love.mouse.isDown('r') then val = 0 end
-		
-		-- check first column instruments
-		if mx >= PIANO_OFF_X*CELLW and mx < (PIANO_OFF_X+16)*CELLW then
-			local cx = math.floor((mx-PIANO_OFF_X*CELLW)/CELLW)
-			-- piano
-			if	my >= PIANO_OFF_Y*CELLH and my < (PIANO_OFF_Y+16)*CELLH then
-				local cy = math.floor((my-PIANO_OFF_Y*CELLH)/CELLH)
-				matPiano[cx+cy*16] = val
-			-- kick
-			elseif my >= KICK_OFF_Y*CELLH and my < (KICK_OFF_Y+1)*CELLH then
-				matKick[cx] = val
-			-- snare
-			elseif my >= SNARE_OFF_Y*CELLH and my < (SNARE_OFF_Y+1)*CELLH then
-				matSnare[cx] = val	
-			-- hat
-			elseif my >= HAT_OFF_Y*CELLH and my < (HAT_OFF_Y+1)*CELLH then
-				matHat[cx] = val
-			elseif my >= RIDE_OFF_Y*CELLH and my < (RIDE_OFF_Y+1)*CELLH then
-				matRide[cx] = val
+		local mx = math.floor(love.mouse.getX()/CELLW)
+		local my = math.floor(love.mouse.getY()/CELLH)
+
+		-- check first column
+		if mx >= PIANO_OFF_X and mx < PIANO_OFF_X+16 then
+			if my >= PIANO_OFF_Y and my < PIANO_OFF_Y+16 then
+				matPiano[mx-PIANO_OFF_X+(my-PIANO_OFF_Y)*16] = val
+			elseif my == KICK_OFF_Y then
+				matKick[mx-KICK_OFF_X] = val
+			elseif my == SNARE_OFF_Y then
+				matSnare[mx-SNARE_OFF_X] = val
+			elseif my == HAT_OFF_Y then
+				matHat[mx-HAT_OFF_X] = val
+			elseif my == RIDE_OFF_Y then
+				matRide[mx-RIDE_OFF_X] = val
 			end
 		-- check second column
-		elseif mx >= BASS_OFF_X*CELLW and mx < (BASS_OFF_X+16)*CELLW then
+		elseif mx >= BASS_OFF_X and mx < BASS_OFF_X+16 then
 			-- bass
-			local cx = math.floor((mx-BASS_OFF_X*CELLW)/CELLW)
-			if my >= BASS_OFF_Y*CELLH and my < (BASS_OFF_Y+16)*CELLH then
-				local cy = math.floor((my-BASS_OFF_Y*CELLH)/CELLH)
-				matBass[cx+cy*16] = val
-			-- tempo
-			elseif my >= TEMPO_OFF_Y*CELLH and my < (TEMPO_OFF_Y+1)*CELLH then
-				cur_tempo = cx
+			if my >= BASS_OFF_Y and my < BASS_OFF_Y+16 then
+				matBass[mx-BASS_OFF_X+(my-BASS_OFF_Y)*16] = val
+			-- tempo bar
+			elseif my == TEMPO_OFF_Y then
+				cur_tempo = mx-TEMPO_OFF_X
 				wait = tempo[cur_tempo]
 			end
 		end
@@ -161,5 +153,40 @@ end
 function love.keypressed(k)
 	if k == ' ' then
 		clearPatterns()
+	end
+end
+
+function love.mousepressed(x,y,button)
+	-- left mouse button
+	local mx = math.floor(x/CELLW)
+	local my = math.floor(y/CELLH)
+	if button == 'l' then
+		-- clear buttons - first column
+		if mx == PIANO_OFF_X-1 then
+			if my == PIANO_OFF_Y then
+				clearMatrix(matPiano)
+			elseif my == KICK_OFF_Y then
+				clearArray(matKick)
+			elseif my == SNARE_OFF_Y then
+				clearArray(matSnare)
+			elseif my == HAT_OFF_Y then
+				clearArray(matHat)
+			elseif my == RIDE_OFF_Y then
+				clearArray(matRide)
+			end
+		-- second column
+		elseif mx == BASS_OFF_X-1 then
+			if my == BASS_OFF_Y then
+				clearMatrix(matBass)
+			end
+		end
+	elseif button == 'wu' or button == 'wd' then
+		if my >= PIANO_OFF_Y and my < PIANO_OFF_Y+16 then -- same for piano and bass
+			if mx >= PIANO_OFF_X and mx < PIANO_OFF_X+16 then
+				shiftMatrix(matPiano,button)
+			elseif mx >= BASS_OFF_X and mx < BASS_OFF_X+16 then
+				shiftMatrix(matBass,button)
+			end
+		end
 	end
 end

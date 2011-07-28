@@ -28,16 +28,39 @@ function loadResources()
 end
 
 function clearPatterns()
+	clearMatrix(matPiano,matBass)
+	clearArray(matKick,matSnare,matHat,matRide)
+end
+
+function clearArray(...)
+	for i=0,15 do
+		for a=1,#arg do
+			arg[a][i] = 0
+		end
+	end
+end
+
+function clearMatrix(...)
 	for iy=0,15 do
 		for ix=0,15 do
-			matPiano[ix+iy*16] = 0
-			matBass[ix+iy*16] = 0
+			for a=1,#arg do
+				arg[a][ix+iy*16] = 0
+			end
 		end
-		matKick[iy] = 0
-		matSnare[iy] = 0
-		matHat[iy] = 0
-		matRide[iy] = 0
-		matBass[iy] = 0
+	end
+end
+
+function shiftMatrix(matrix,dir)
+	if dir == 'wu' then
+		for i=16,255 do
+			matrix[i-16] = matrix[i]
+			matrix[i] = 0
+		end
+	elseif dir == 'wd' then
+		for i=255,16,-1 do
+			matrix[i] = matrix[i-16]
+			matrix[i-16] = 0
+		end
 	end
 end
 
