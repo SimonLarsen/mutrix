@@ -71,4 +71,6 @@ function createQuads()
 			quad[ix+iy*8] = love.graphics.newQuad(ix*CELLW,iy*CELLH,CELLW,CELLH,imgTiles:getWidth(),imgTiles:getHeight())
 		end
 	end
+	bg_quad = love.graphics.newQuad(0,0,296,416,512,512)
+	logo_quad = love.graphics.newQuad(296,0,106,29,512,512)
 end
