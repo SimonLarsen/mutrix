@@ -2,19 +2,19 @@ require("defines")
 require("utils")
 
 function love.load()
-	love.graphics.setLineWidth(2)
-	loadResources()
-
 	update = 0
 	play_x = 0
 	cur_tempo = 8
+	cur_scale = 2
 	wait = tempo[cur_tempo]
-	-- 32, 21
+
+	loadResources()
 end
 
 function love.update(dt)
 	-- play
 	update=update+dt
+	hover = nil
 	if update > wait then
 		update = update%wait
 		play_x = (play_x+1)%16
@@ -47,12 +47,11 @@ function love.update(dt)
 		end
 	end
 	-- check mouse
+	local mx = math.floor(love.mouse.getX()/CELLW)
+	local my = math.floor(love.mouse.getY()/CELLH)
 	if love.mouse.isDown('l','r') then
 		local val = 1
 		if love.mouse.isDown('r') then val = 0 end
-		local mx = math.floor(love.mouse.getX()/CELLW)
-		local my = math.floor(love.mouse.getY()/CELLH)
-
 		-- check first column
 		if mx >= PIANO_OFF_X and mx < PIANO_OFF_X+16 then
 			if my >= PIANO_OFF_Y and my < PIANO_OFF_Y+16 then
@@ -78,6 +77,18 @@ function love.update(dt)
 			end
 		end
 	end
+	-- check scale hover and clicks
+	if my == SCALE_OFF_Y then
+		for i = 0,4 do
+			if i+SCALE_OFF_X == mx then
+				hover = {scale_name[i+1],love.mouse.getX()+16,love.mouse.getY()+16}
+				if love.mouse.isDown('l') and cur_scale-1 ~= i then
+					cur_scale = i+1
+					setScale(cur_scale)
+				end
+			end
+		end
+	end
 end
 
 function love.draw()
@@ -93,6 +104,7 @@ function love.draw()
 	love.graphics.drawq(imgTiles,quad[32],CELLW,RIDE_OFF_Y*CELLH)
 	love.graphics.drawq(imgTiles,quad[40],(BASS_OFF_X-1)*CELLW,BASS_OFF_Y*CELLH)
 	love.graphics.drawq(imgTiles,quad[48],(TEMPO_OFF_X-1)*CELLW,TEMPO_OFF_Y*CELLH)
+	love.graphics.drawq(imgTiles,quad[56],(SCALE_OFF_X-1)*CELLW,SCALE_OFF_Y*CELLH)
 
 	love.graphics.push()
 	-- draw piano matrix
@@ -148,6 +160,22 @@ function love.draw()
 	love.graphics.drawq(imgTiles,quad[6],15*CELLW,0)
 	love.graphics.drawq(imgTiles,quad[7],cur_tempo*CELLW,0)
 	love.graphics.pop()
+	-- draw scale buttons
+	love.graphics.push()
+	love.graphics.translate(SCALE_OFF_X*CELLW,SCALE_OFF_Y*CELLH)
+	for	i=0,4 do
+		if i+1 == cur_scale then
+			love.graphics.drawq(imgTiles,quad[2],i*CELLW,0)
+		else
+			love.graphics.drawq(imgTiles,quad[1],i*CELLW,0)
+		end
+	end
+	love.graphics.drawq(imgTiles,faces_quad,0,0)
+	love.graphics.pop()
+	-- draw hover
+	if hover ~= nil then
+		drawTextBox(hover[1],hover[2],hover[3])
+	end
 end
 
 function love.keypressed(k)

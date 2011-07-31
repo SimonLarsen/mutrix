@@ -5,16 +5,15 @@ function loadResources()
 	imgBG:setFilter("nearest","nearest")
 	createQuads()
 
+	font = love.graphics.newImageFont("res/tamsyn.png"," abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ.,-")
+	love.graphics.setFont(font)
+
 	pianoData = love.sound.newSoundData("res/piano.ogg")
 	bassData = love.sound.newSoundData("res/bass.ogg")
 	pianoTone = {}
 	bassTone = {}
-	for i=1,#freq do
-		pianoTone[i] = love.audio.newSource(pianoData)
-		bassTone[i] = love.audio.newSource(bassData)
-		pianoTone[i]:setPitch(freq[i])
-		bassTone[i]:setPitch(freq[i])
-	end
+	setScale(cur_scale)
+
 	sndKick = love.audio.newSource("res/kick.ogg","static")
 	sndSnare = love.audio.newSource("res/snare.ogg","static")
 	sndHat = love.audio.newSource("res/hat.ogg","static")
@@ -74,4 +73,24 @@ function createQuads()
 	end
 	bg_quad = love.graphics.newQuad(0,0,1,416,512,512)
 	logo_quad = love.graphics.newQuad(1,0,106,29,512,512)
+	faces_quad = love.graphics.newQuad(16,112,80,16,128,128)
+end
+
+function setScale(sc)
+	for i=1,16 do
+		pianoTone[i] = love.audio.newSource(pianoData)
+		bassTone[i] = love.audio.newSource(bassData)
+		pianoTone[i]:setPitch(freq[scale[sc][i]])
+		bassTone[i]:setPitch(freq[scale[sc][i]])
+	end
+end
+
+function drawTextBox(text,x,y)
+	local w = math.ceil(string.len(text)*6.5)
+	love.graphics.setColor(0,0,0,255)
+	love.graphics.rectangle("fill",x-4,y-4,w,16)
+	love.graphics.setColor(4,31,85,255)
+	love.graphics.rectangle("fill",x-3,y-3,w-2,14)
+	love.graphics.setColor(255,255,255,255)
+	love.graphics.print(text,x,y)
 end
