@@ -5,7 +5,7 @@ function loadResources()
 	imgBG:setFilter("nearest","nearest")
 	createQuads()
 
-	font = love.graphics.newImageFont("res/tamsyn.png"," abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ.,-")
+	font = love.graphics.newImageFont("res/tamsyn.png"," abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ.,-0123456789")
 	love.graphics.setFont(font)
 
 	pianoData = love.sound.newSoundData("res/piano.ogg")
@@ -19,23 +19,58 @@ function loadResources()
 	sndHat = love.audio.newSource("res/hat.ogg","static")
 	sndRide = love.audio.newSource("res/ride.ogg","static")
 	matPiano = {}
+	matBass = {}
 	matKick = {}
 	matSnare = {}
 	matHat = {}
 	matRide = {}
-	matBass = {}
-	clearPatterns()
+	createPattern(1)
 
 	tempo = {}
 	for i=0,15 do
 		tempo[i] = MIN_TEMPO - i*((MIN_TEMPO-MAX_TEMPO)/16)
 	end
-	wait = tempo[cur_tempo]
 end
 
-function clearPatterns()
-	clearMatrix(matPiano,matBass)
-	clearArray(matKick,matSnare,matHat,matRide)
+function createNewPattern()
+	if num_pat < MAX_PAT then
+		num_pat = num_pat + 1
+		createPattern(num_pat)
+	end
+end
+
+function createPattern(num)
+	matPiano[num] = {}
+	matBass[num] = {}
+	matKick[num] = {}
+	matSnare[num] = {}
+	matHat[num] = {}
+	matRide[num] = {}
+	clearMatrix(matPiano[num],matBass[num])
+	clearArray(matKick[num],matSnare[num],matHat[num],matRide[num])
+end
+
+function deletePattern(num)
+	if num > 1 and num <= num_pat then
+		local i = num
+		while i < num_pat do
+			matPiano[i] = matPiano[i+1]
+			matBass[i] = matBass[i+1]
+			matKick[i] = matKick[i+1]
+			matSnare[i] = matKick[i+1]
+			matHat[i] = matKick[i+1]
+			matRide[i] = matKick[i+1]
+			i = i+1
+		end
+		matPiano[i] = nil
+		matBass[i] = nil
+		matKick[i] = nil
+		matSnare[i] = nil
+		matHat[i] = nil
+		matRide[i] = nil
+		num_pat = num_pat - 1
+		if pat > num_pat then pat = num_pat end
+	end
 end
 
 function clearArray(...)
@@ -49,11 +84,9 @@ end
 
 function clearMatrix(...)
 	local mat = {...}
-	for iy=0,15 do
-		for ix=0,15 do
-			for a=1,#mat do
-				mat[a][ix+iy*16] = 0
-			end
+	for i=0,16*16-1 do
+		for a=1,#mat do
+			mat[a][i] = 0
 		end
 	end
 end
