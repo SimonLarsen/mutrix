@@ -73,6 +73,23 @@ function deletePattern(num)
 	end
 end
 
+function pastePattern(from,to)
+	if from >= 1 and from <= num_pat and
+	to >= 1 and to <= num_pat and from ~= to and
+	from ~= nil and to ~= nil then
+		for ix = 0,15 do
+			for iy = 0,15 do
+				matPiano[to][ix+iy*16] = matPiano[from][ix+iy*16]
+				matBass[to][ix+iy*16] = matBass[from][ix+iy*16]
+			end
+			matKick[to][ix] = matKick[from][ix]
+			matSnare[to][ix] = matSnare[from][ix]
+			matHat[to][ix] = matHat[from][ix]
+			matRide[to][ix] = matRide[from][ix]
+		end
+	end
+end
+
 function clearArray(...)
 	local arr = {...}
 	for i=0,15 do

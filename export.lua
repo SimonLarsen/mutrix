@@ -23,10 +23,10 @@ function writeToMidi()
 				end
 				-- drums
 				if matKick[pat][ix] == 1 then
-					table.insert(events,{'note',delta,beat,9,47,127})
+					table.insert(events,{'note',delta,beat,9,47,100})
 				end
 				if matSnare[pat][ix] == 1 then
-					table.insert(events,{'note',delta,beat,9,40,100})
+					table.insert(events,{'note',delta,beat,9,40,64})
 				end
 				if matHat[pat][ix] == 1 then
 					table.insert(events,{'note',delta,beat,9,42,127})

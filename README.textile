@@ -1,0 +1,22 @@
+h1. Mütrix
+
+h2. Controls
+
+h3. Instruments
+
+* Fill cells with left mouse button, remove with right.
+* Scroll mouse wheel to move entire matrix up or down (works only for piano and bass.)
+* Press on each instrument's icon to clear them.
+* Press space to clear all instruments.
+
+h3. Patterns
+
+* Press the '+'-icon or the '+'-key on your keyboard to add a new pattern.
+* Click on a pattern number or the equivalent number key on your keyboard to select it.
+* Right click a pattern number to delete it.
+* Ctrl-click a pattern number to duplicate it (added as last pattern.)
+* Press ctrl+c to copy the active pattern and press ctrl+v in another pattern to paste it.
+
+h3. Other
+
+* Press 'e' to export song to midi file (will be exported to file 'export.mid' for now.)

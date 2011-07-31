@@ -210,6 +210,10 @@ function love.keypressed(k,unicode)
 		createNewPattern()
 	elseif k == '-' then
 		deletePattern(num_pat)
+	elseif k == 'c' and love.keyboard.isDown('lctrl','rctrl') then
+		copy_from =	pat 
+	elseif k == 'v' and love.keyboard.isDown('lctrl','rctrl') then
+		pastePattern(copy_from,pat)
 	else
 		local num = tonumber(k)
 		if num ~= nil and num >= 1 and num <= num_pat then
@@ -243,13 +247,20 @@ function love.mousepressed(x,y,button)
 			end
 		elseif my == PAT_OFF_Y then
 			if mx >= PAT_OFF_X and mx < PAT_OFF_X+num_pat then
-				pat = mx-PAT_OFF_X+1
+				if love.keyboard.isDown('lctrl','rctrl') then
+					if num_pat < MAX_PAT then
+						createNewPattern()
+						pastePattern(mx-PAT_OFF_X+1,num_pat)
+					end
+				else
+					pat = mx-PAT_OFF_X+1
+				end
 			elseif mx == PAT_OFF_X+num_pat then
 				createNewPattern()
 			end
 		end
 	elseif button == 'r' then
-		if mx >= PAT_OFF_X and mx < PAT_OFF_X+num_pat then
+		if my == PAT_OFF_Y and mx >= PAT_OFF_X and mx < PAT_OFF_X+num_pat then
 			deletePattern(mx-PAT_OFF_X+1)
 		end
 	elseif button == 'wu' or button == 'wd' then
