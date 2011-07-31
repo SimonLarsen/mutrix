@@ -86,7 +86,7 @@ function setScale(sc)
 end
 
 function drawTextBox(text,x,y)
-	local w = math.ceil(string.len(text)*6.5)
+	local w = math.ceil(string.len(text)*6.8)
 	love.graphics.setColor(0,0,0,255)
 	love.graphics.rectangle("fill",x-4,y-4,w,16)
 	love.graphics.setColor(4,31,85,255)

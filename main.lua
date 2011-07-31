@@ -5,7 +5,7 @@ function love.load()
 	update = 0
 	play_x = 0
 	cur_tempo = 8
-	cur_scale = 2
+	cur_scale = 1
 	wait = tempo[cur_tempo]
 
 	loadResources()
