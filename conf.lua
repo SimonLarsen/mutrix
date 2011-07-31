@@ -1,6 +1,7 @@
 function love.conf(t)
     t.title = "Mütrix"
     t.author = "Simon Larsen"
+	t.identity = "mutrix"
     t.screen.width = 37*16
     t.screen.height = 26*16
     t.screen.fullscreen = false

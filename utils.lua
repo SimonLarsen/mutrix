@@ -25,6 +25,12 @@ function loadResources()
 	matRide = {}
 	matBass = {}
 	clearPatterns()
+
+	tempo = {}
+	for i=0,15 do
+		tempo[i] = MIN_TEMPO - i*((MIN_TEMPO-MAX_TEMPO)/16)
+	end
+	wait = tempo[cur_tempo]
 end
 
 function clearPatterns()
@@ -33,18 +39,20 @@ function clearPatterns()
 end
 
 function clearArray(...)
+	local arr = {...}
 	for i=0,15 do
-		for a=1,#arg do
-			arg[a][i] = 0
+		for a=1,#arr do
+			arr[a][i] = 0
 		end
 	end
 end
 
 function clearMatrix(...)
+	local mat = {...}
 	for iy=0,15 do
 		for ix=0,15 do
-			for a=1,#arg do
-				arg[a][ix+iy*16] = 0
+			for a=1,#mat do
+				mat[a][ix+iy*16] = 0
 			end
 		end
 	end

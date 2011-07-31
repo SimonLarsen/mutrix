@@ -1,12 +1,13 @@
+require("freq")
 require("defines")
 require("utils")
+require("export")
 
 function love.load()
 	update = 0
 	play_x = 0
 	cur_tempo = 8
 	cur_scale = 1
-	wait = tempo[cur_tempo]
 
 	loadResources()
 end
@@ -181,6 +182,8 @@ end
 function love.keypressed(k)
 	if k == ' ' then
 		clearPatterns()
+	elseif k == 'e' then
+		writeToMidi()
 	end
 end
 
