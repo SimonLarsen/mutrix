@@ -2,24 +2,26 @@ require("freq")
 require("defines")
 require("utils")
 require("export")
+require("draw")
 
 function love.load()
-	update = 0
+	time = 0
 	play_x = 0
 	cur_tempo = 8
 	cur_scale = 1
 	num_pat = 1
 	pat = 1
+	play = true
 	loadResources()
 	wait = tempo[cur_tempo]
 end
 
 function love.update(dt)
 	-- play
-	update=update+dt
+	time = time+dt
 	hover = nil
-	if update > wait then
-		update = update%wait
+	if time > wait and play == true then
+		time = time%wait
 		play_x = (play_x+1)%16
 		-- play piano and bass
 		for iy=0,15 do
@@ -99,36 +101,18 @@ function love.draw()
 	-- draw background
 	love.graphics.drawq(imgBG,bg_quad,0,0,0,592,1)
 	love.graphics.drawq(imgBG,logo_quad,32,21)
-	-- draw icons
-	love.graphics.drawq(imgTiles,quad[0],CELLW,PIANO_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[8],CELLW,KICK_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[16],CELLW,SNARE_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[24],CELLW,HAT_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[32],CELLW,RIDE_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[40],(BASS_OFF_X-1)*CELLW,BASS_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[48],(TEMPO_OFF_X-1)*CELLW,TEMPO_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[56],(SCALE_OFF_X-1)*CELLW,SCALE_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[33],(PAT_OFF_X-1)*CELLW,PAT_OFF_Y*CELLH)
 
-	love.graphics.push()
-	-- draw piano matrix
-	love.graphics.translate(PIANO_OFF_X*CELLW,PIANO_OFF_Y*CELLH)
-	for iy=0,15 do
-		for ix=0,15 do
-			if ix == play_x then
-				love.graphics.drawq(imgTiles,quad[18+matPiano[pat][ix+iy*16]],ix*CELLW,iy*CELLH)
-			else
-				love.graphics.drawq(imgTiles,quad[17+matPiano[pat][ix+iy*16]],ix*CELLW,iy*CELLH)
-			end
-		end
-	end
-	love.graphics.pop()
+	drawIcons()
+
+	drawMatrix(matPiano,17,PIANO_OFF_X,PIANO_OFF_Y)
+	drawMatrix(matBass,25,BASS_OFF_X,BASS_OFF_Y)
+
 	-- draw drum matrices
 	love.graphics.push()
 	love.graphics.setColor(255,255,255,255)
 	love.graphics.translate(KICK_OFF_X*CELLW,KICK_OFF_Y*CELLH)
 	for x=0,15 do
-		if x == play_x then
+		if x == play_x and play == true then
 			love.graphics.drawq(imgTiles,quad[2+matKick[pat][x]],x*CELLW,0)
 			love.graphics.drawq(imgTiles,quad[10+matSnare[pat][x]],x*CELLW,CELLH)
 			love.graphics.drawq(imgTiles,quad[26+matHat[pat][x]],x*CELLW,2*CELLH)
@@ -141,19 +125,7 @@ function love.draw()
 		end
 	end
 	love.graphics.pop()
-	-- draw bass matrix
-	love.graphics.push()
-	love.graphics.translate(BASS_OFF_X*CELLW,BASS_OFF_Y*CELLH)
-	for iy=0,15 do
-		for ix=0,15 do
-			if ix == play_x then
-				love.graphics.drawq(imgTiles,quad[26+matBass[pat][ix+iy*16]],ix*CELLW,iy*CELLH)
-			else
-				love.graphics.drawq(imgTiles,quad[25+matBass[pat][ix+iy*16]],ix*CELLW,iy*CELLH)
-			end
-		end
-	end
-	love.graphics.pop()
+
 	-- draw BPM slider
 	love.graphics.push()
 	love.graphics.translate(TEMPO_OFF_X*CELLW,TEMPO_OFF_Y*CELLH)
@@ -201,9 +173,17 @@ function love.draw()
 end
 
 function love.keypressed(k,unicode)
-	if k == ' ' then
+	if k == 'c' then
 		clearMatrix(matPiano[pat],matBass[pat])
 		clearArray(matKick[pat],matSnare[pat],matHat[pat],matRide[pat])
+	elseif k == ' ' then
+		if play == true then
+			play = false
+		else
+			play = true
+			time = wait
+			play_x = 15
+		end
 	elseif k == 'e' then
 		writeToMidi()
 	elseif k == '+' then
