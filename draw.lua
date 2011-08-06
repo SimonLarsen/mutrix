@@ -73,7 +73,11 @@ function drawPlayer()
 		drawTextBox(hover[1],hover[2],hover[3])
 	end
 	-- draw song editor
-	love.graphics.drawq(imgTiles,quad[13],(SONG_OFF_X-1)*CELLW,SONG_OFF_Y*CELLH)
+	if song_scroll == 0 then
+		love.graphics.drawq(imgTiles,quad[31],(SONG_OFF_X-1)*CELLW,SONG_OFF_Y*CELLH)
+	else
+		love.graphics.drawq(imgTiles,quad[13],(SONG_OFF_X-1)*CELLW,SONG_OFF_Y*CELLH)
+	end
 	for i=0,30 do
 		if (song_focus or state == 2) and i+song_scroll == song_sel then
 			love.graphics.drawq(imgTiles,quad[22],(i+SONG_OFF_X)*CELLW,SONG_OFF_Y*CELLH)
@@ -89,7 +93,11 @@ function drawPlayer()
 			end
 		end
 	end
-	love.graphics.drawq(imgTiles,quad[14],(SONG_OFF_X+31)*CELLW,SONG_OFF_Y*CELLH)
+	if song_scroll < song_sel then
+		love.graphics.drawq(imgTiles,quad[14],(SONG_OFF_X+31)*CELLW,SONG_OFF_Y*CELLH)
+	else
+		love.graphics.drawq(imgTiles,quad[39],(SONG_OFF_X+31)*CELLW,SONG_OFF_Y*CELLH)
+	end
 	love.graphics.setColor(0,0,0,255)
 	for i=0,30 do
 		if i+song_scroll < song_len then

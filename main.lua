@@ -4,7 +4,6 @@ require("utils")
 require("export")
 require("draw")
 require("events")
-require("song")
 
 function love.load()
 	time = 0
@@ -53,5 +52,13 @@ end
 function love.mousepressed(x,y,button)
 	if state == 1 or state == 2 then
 		mousePressedPlayer(x,y,button)
+	end
+end
+
+function love.mousereleased(x,y,button)
+-- use released instead of pressed to
+-- avoid drawing underneath
+	if state == 3 then
+		mouseReleasedSave(x,y,button)
 	end
 end
