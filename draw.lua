@@ -1,4 +1,4 @@
-function love.draw()
+function drawPlayer()
 	love.graphics.setColor(255,255,255,255)
 	-- draw background
 	love.graphics.drawq(imgBG,bg_quad,0,0,0,592,1)
@@ -75,11 +75,11 @@ function love.draw()
 	-- draw song editor
 	love.graphics.drawq(imgTiles,quad[13],(SONG_OFF_X-1)*CELLW,SONG_OFF_Y*CELLH)
 	for i=0,30 do
-		if (song_focus or play_song) and i == song_sel then
+		if (song_focus or state == 2) and i+song_scroll == song_sel then
 			love.graphics.drawq(imgTiles,quad[22],(i+SONG_OFF_X)*CELLW,SONG_OFF_Y*CELLH)
 		else
-			if i < song_len then
-				if play_song then
+			if i+song_scroll < song_len then
+				if state == 2 then
 					love.graphics.drawq(imgTiles,quad[21],(i+SONG_OFF_X)*CELLW,SONG_OFF_Y*CELLH)
 				else
 					love.graphics.drawq(imgTiles,quad[20],(i+SONG_OFF_X)*CELLW,SONG_OFF_Y*CELLH)
@@ -92,10 +92,29 @@ function love.draw()
 	love.graphics.drawq(imgTiles,quad[14],(SONG_OFF_X+31)*CELLW,SONG_OFF_Y*CELLH)
 	love.graphics.setColor(0,0,0,255)
 	for i=0,30 do
-		if i < song_len then
-			love.graphics.print(song[i],(SONG_OFF_X+i)*CELLW+6,SONG_OFF_Y*CELLH+4)
+		if i+song_scroll < song_len then
+			love.graphics.print(song[i+song_scroll],(SONG_OFF_X+i)*CELLW+6,SONG_OFF_Y*CELLH+4)
 		end
 	end
+end
+
+function drawSave()
+	love.graphics.setColor(0,0,0,255)
+	love.graphics.rectangle("fill",175,207,242,50)
+	love.graphics.setColor(4,31,85,255)
+	love.graphics.rectangle("fill",176,208,240,48)
+	love.graphics.setColor(255,255,255,255)
+	love.graphics.drawq(imgTiles,quad[28],192,224)
+	for i = 1,10 do
+		love.graphics.drawq(imgTiles,quad[29],192+i*CELLW,224)
+	end
+	love.graphics.drawq(imgTiles,quad[30],368,224)
+	love.graphics.drawq(imgTiles,quad[15],384,224)
+	love.graphics.setColor(255,255,255,255)
+	love.graphics.print("Export to file:",185,213)
+	love.graphics.setColor(0,0,0,255)
+	love.graphics.print(filename,196,228)
+	love.graphics.print("|",193+font:getWidth(filename:sub(1,caret)),228)
 end
 
 function drawTextBox(text,x,y)

@@ -60,3 +60,8 @@ scale_name = {
 
 MIN_TEMPO = 0.5 
 MAX_TEMPO = 0.04
+
+-- states
+-- 1 edit pattern / song
+-- 2 play song
+-- 3 save midi

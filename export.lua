@@ -42,7 +42,7 @@ function writeToMidi()
 	end
 	local score = {tpb,events}
 	local mymidi = MIDI.score2midi(score)
-	local file = assert(io.open('export.mid','w'))
+	local file = assert(io.open(filename,'w'))
 	file:write(mymidi)
 	file:close()
 end

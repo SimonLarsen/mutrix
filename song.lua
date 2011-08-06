@@ -2,12 +2,18 @@ function songMousePressed(mx,my,button)
 	if mx >= SONG_OFF_X-1 and mx <= SONG_OFF_X+31 and my == SONG_OFF_Y then
 		if mx >= SONG_OFF_X and mx <= SONG_OFF_X+30 then
 			song_focus = true
-			local ox = mx-SONG_OFF_X
+			local ox = mx-SONG_OFF_X+song_scroll
 			if ox > song_len then
 				song_sel = song_len
 			else
 				song_sel = ox
 			end
+		elseif mx == SONG_OFF_X-1 then
+			if song_scroll > 0 then
+				song_scroll = song_scroll - 1
+			end
+		elseif mx == SONG_OFF_X+31 then
+			song_scroll = song_scroll + 1
 		end
 	else
 		song_focus = false

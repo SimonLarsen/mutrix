@@ -5,7 +5,7 @@ function loadResources()
 	imgBG:setFilter("nearest","nearest")
 	createQuads()
 
-	font = love.graphics.newImageFont("res/tamsyn.png"," abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ.,-0123456789")
+	font = love.graphics.newImageFont("res/tamsyn.png"," abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ.,-0123456789|")
 	love.graphics.setFont(font)
 
 	pianoData = love.sound.newSoundData("res/piano.ogg")
@@ -57,9 +57,9 @@ function deletePattern(num)
 			matPiano[i] = matPiano[i+1]
 			matBass[i] = matBass[i+1]
 			matKick[i] = matKick[i+1]
-			matSnare[i] = matKick[i+1]
-			matHat[i] = matKick[i+1]
-			matRide[i] = matKick[i+1]
+			matSnare[i] = matSnare[i+1]
+			matHat[i] = matHat[i+1]
+			matRide[i] = matRide[i+1]
 			i = i+1
 		end
 		matPiano[i] = nil
