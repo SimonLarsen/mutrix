@@ -51,7 +51,7 @@ function createPattern(num)
 end
 
 function deletePattern(num)
-	if num > 1 and num <= num_pat then
+	if num > 0 and num <= num_pat and num_pat > 1 then
 		local i = num
 		while i < num_pat do
 			matPiano[i] = matPiano[i+1]
@@ -69,6 +69,22 @@ function deletePattern(num)
 		matHat[i] = nil
 		matRide[i] = nil
 		num_pat = num_pat - 1
+
+		for i=song_len-1,0,-1 do
+			if song[i] >= num then
+				if song[i] == 1 or song[i] == num then
+					for j=i,song_len-1 do
+						song[j] = song[j+1]
+					end
+					song_len = song_len-1
+					if song_sel > song_len then
+						song_sel = song_len
+					end
+				else
+					song[i] = song[i]-1
+				end
+			end
+		end
 		if pat > num_pat then pat = num_pat end
 	end
 end
@@ -129,7 +145,7 @@ function createQuads()
 			quad[ix+iy*8] = love.graphics.newQuad(ix*CELLW,iy*CELLH,CELLW,CELLH,imgTiles:getWidth(),imgTiles:getHeight())
 		end
 	end
-	bg_quad = love.graphics.newQuad(0,0,1,416,512,512)
+	bg_quad = love.graphics.newQuad(0,0,1,448,512,512)
 	logo_quad = love.graphics.newQuad(1,0,106,29,512,512)
 	faces_quad = love.graphics.newQuad(16,112,80,16,128,128)
 end

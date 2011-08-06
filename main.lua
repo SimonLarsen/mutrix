@@ -3,6 +3,8 @@ require("defines")
 require("utils")
 require("export")
 require("draw")
+require("events")
+require("song")
 
 function love.load()
 	time = 0
@@ -12,45 +14,17 @@ function love.load()
 	num_pat = 1
 	pat = 1
 	play = true
+	play_song = false
+	song = {}
+	song_focus = false
+	song_sel = 0
+	song_len = 0
 	loadResources()
 	wait = tempo[cur_tempo]
 end
 
 function love.update(dt)
-	-- play
-	time = time+dt
-	hover = nil
-	if time > wait and play == true then
-		time = time%wait
-		play_x = (play_x+1)%16
-		-- play piano and bass
-		for iy=0,15 do
-			if matPiano[pat][play_x+iy*16] == 1 then
-				if pianoTone[iy+1]:isStopped() == false then pianoTone[iy+1]:stop() end
-				pianoTone[iy+1]:play()
-			end
-			if matBass[pat][play_x+iy*16] == 1 then
-				if bassTone[iy+1]:isStopped() == false then bassTone[iy+1]:stop() end
-				bassTone[iy+1]:play()
-			end
-		end
-		if matKick[pat][play_x] == 1 then
-			if sndKick:isStopped() == false then sndKick:stop() end
-			sndKick:play()
-		end
-		if matSnare[pat][play_x] == 1 then
-			if sndSnare:isStopped() == false then sndSnare:stop() end
-			sndSnare:play()
-		end
-		if matHat[pat][play_x] == 1 then
-			if sndHat:isStopped() == false then sndHat:stop() end
-			sndHat:play()
-		end
-		if matRide[pat][play_x] == 1 then
-			if sndRide:isStopped() == false then sndRide:stop() end
-			sndRide:play()
-		end
-	end
+	updatePlayer(dt)
 	-- check mouse
 	local mx = math.floor(love.mouse.getX()/CELLW)
 	local my = math.floor(love.mouse.getY()/CELLH)
@@ -96,82 +70,6 @@ function love.update(dt)
 	end
 end
 
-function love.draw()
-	love.graphics.setColor(255,255,255,255)
-	-- draw background
-	love.graphics.drawq(imgBG,bg_quad,0,0,0,592,1)
-	love.graphics.drawq(imgBG,logo_quad,32,21)
-
-	drawIcons()
-
-	drawMatrix(matPiano,17,PIANO_OFF_X,PIANO_OFF_Y)
-	drawMatrix(matBass,25,BASS_OFF_X,BASS_OFF_Y)
-
-	-- draw drum matrices
-	love.graphics.push()
-	love.graphics.setColor(255,255,255,255)
-	love.graphics.translate(KICK_OFF_X*CELLW,KICK_OFF_Y*CELLH)
-	for x=0,15 do
-		if x == play_x and play == true then
-			love.graphics.drawq(imgTiles,quad[2+matKick[pat][x]],x*CELLW,0)
-			love.graphics.drawq(imgTiles,quad[10+matSnare[pat][x]],x*CELLW,CELLH)
-			love.graphics.drawq(imgTiles,quad[26+matHat[pat][x]],x*CELLW,2*CELLH)
-			love.graphics.drawq(imgTiles,quad[18+matRide[pat][x]],x*CELLW,3*CELLH)
-		else
-			love.graphics.drawq(imgTiles,quad[1+matKick[pat][x]],x*CELLW,0)
-			love.graphics.drawq(imgTiles,quad[9+matSnare[pat][x]],x*CELLW,CELLH)
-			love.graphics.drawq(imgTiles,quad[25+matHat[pat][x]],x*CELLW,2*CELLH)
-			love.graphics.drawq(imgTiles,quad[17+matRide[pat][x]],x*CELLW,3*CELLH)
-		end
-	end
-	love.graphics.pop()
-
-	-- draw BPM slider
-	love.graphics.push()
-	love.graphics.translate(TEMPO_OFF_X*CELLW,TEMPO_OFF_Y*CELLH)
-	love.graphics.drawq(imgTiles,quad[4],0,0)
-	for i=1,14 do
-		love.graphics.drawq(imgTiles,quad[5],i*CELLW,0)
-	end
-	love.graphics.drawq(imgTiles,quad[6],15*CELLW,0)
-	love.graphics.drawq(imgTiles,quad[7],cur_tempo*CELLW,0)
-	love.graphics.pop()
-	-- draw scale buttons
-	love.graphics.push()
-	love.graphics.translate(SCALE_OFF_X*CELLW,SCALE_OFF_Y*CELLH)
-	for	i=0,4 do
-		if i+1 == cur_scale then
-			love.graphics.drawq(imgTiles,quad[2],i*CELLW,0)
-		else
-			love.graphics.drawq(imgTiles,quad[1],i*CELLW,0)
-		end
-	end
-	love.graphics.drawq(imgTiles,faces_quad,0,0)
-	love.graphics.pop()
-	-- draw pattern select buttons
-	love.graphics.push()
-	love.graphics.translate(PAT_OFF_X*CELLW,PAT_OFF_Y*CELLH)
-	for i=0,num_pat-1 do
-		if i+1 == pat then
-			love.graphics.drawq(imgTiles,quad[2],i*CELLW,0)
-			love.graphics.setColor(0,0,0,255)
-			love.graphics.print(i+1,i*CELLW+6,4)
-			love.graphics.setColor(255,255,255,255)
-		else
-			love.graphics.drawq(imgTiles,quad[1],i*CELLW,0)
-			love.graphics.print(i+1,i*CELLW+6,4)
-		end
-	end
-	if num_pat < MAX_PAT then
-		love.graphics.drawq(imgTiles,quad[12],num_pat*CELLW,0)
-	end
-	love.graphics.pop()
-	-- draw hover
-	if hover ~= nil then
-		drawTextBox(hover[1],hover[2],hover[3])
-	end
-end
-
 function love.keypressed(k,unicode)
 	if k == 'c' then
 		clearMatrix(matPiano[pat],matBass[pat])
@@ -181,9 +79,30 @@ function love.keypressed(k,unicode)
 			play = false
 		else
 			play = true
+			time = wait -- kind of a hack, but it works?
+			play_x = 15
+		end
+		if play_song then
+			play_song = false
+		end
+	elseif k == 'return' then
+		if play_song then
+			play_song = false
+			play_x = 15
+			time = wait
+		elseif song_len > 0 then
+			play_song = true
+			song_sel = song_len-1
+			play = true
 			time = wait
 			play_x = 15
 		end
+	elseif unicode >= 0x31 and unicode <= 0x30 + num_pat and song_focus == false and play_song == false then
+		pat = unicode - 0x30
+	elseif k == 's' then
+		song_focus = not song_focus
+	elseif k == 'escape' then
+		song_focus = false
 	elseif k == 'e' then
 		writeToMidi()
 	elseif k == '+' then
@@ -194,11 +113,9 @@ function love.keypressed(k,unicode)
 		copy_from =	pat 
 	elseif k == 'v' and love.keyboard.isDown('lctrl','rctrl') then
 		pastePattern(copy_from,pat)
-	else
-		local num = tonumber(k)
-		if num ~= nil and num >= 1 and num <= num_pat then
-			pat = num
-		end
+	end
+	if song_focus then
+		songKeyPressed(k,unicode)
 	end
 end
 
@@ -238,6 +155,9 @@ function love.mousepressed(x,y,button)
 			elseif mx == PAT_OFF_X+num_pat then
 				createNewPattern()
 			end
+		-- export to midi buton
+		elseif mx == SONG_OFF_X+32 and my == SONG_OFF_Y then
+			writeToMidi()	
 		end
 	elseif button == 'r' then
 		if my == PAT_OFF_Y and mx >= PAT_OFF_X and mx < PAT_OFF_X+num_pat then
@@ -252,4 +172,5 @@ function love.mousepressed(x,y,button)
 			end
 		end
 	end
+	songMousePressed(mx,my,button)
 end

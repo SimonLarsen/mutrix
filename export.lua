@@ -8,11 +8,12 @@ function writeToMidi()
 	table.insert(events,{'patch_change',0,2,MIDI_BASS})
 	table.insert(events,{'set_tempo',0,tempo})
 	-- add piano and bass
-	for pat = 1,num_pat do
+	for i = 0,song_len-1 do
+		local pat = song[i]
 		for ix = 0,15 do
 			for iy = 0,15 do
 				local midinote = #freq-scale[cur_scale][iy+1]+36
-				local delta = (pat-1)*tpb*16+ix*tpb
+				local delta = i*tpb*16+ix*tpb
 				-- piano
 				if matPiano[pat][ix+iy*16] == 1 then
 					local e = {'note',delta,tpb,1,midinote,96}
