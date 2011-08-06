@@ -7,7 +7,8 @@ h3. Instruments
 * Fill cells with left mouse button, remove with right.
 * Scroll mouse wheel to move entire matrix up or down (works only for piano and bass.)
 * Press on each instrument's icon to clear them.
-* Press space to clear all instruments.
+* Press c to clear all instruments.
+* Press play to start and stop the player
 
 h3. Patterns
 
@@ -17,6 +18,11 @@ h3. Patterns
 * Ctrl-click a pattern number to duplicate it (added as last pattern.)
 * Press ctrl+c to copy the active pattern and press ctrl+v in another pattern to paste it.
 
-h3. Other
+h3. Song editor
 
-* Press 'e' to export song to midi file (will be exported to file 'export.mid' for now.)
+* Press the song editor (bottom row) to select it
+* Use the numbers 1-9 to add the corresponding pattern to the song
+* Use delete and backspace to delete the selected or preceding song block (much like in a text editor)
+* Press return to play the entire song end press return again to stop it
+* Press 'e' or click the icon next to the song editor to export song to midi file.
+The song will be written to 'export.mid' in the folder you stored mutrix.love.
