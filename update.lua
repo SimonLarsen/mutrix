@@ -88,6 +88,8 @@ function updateMouse(dt)
 				end
 			end
 		end
+	elseif mx == SONG_OFF_X+32 and my == SONG_OFF_Y then
+		hover = {"Export to midi",love.mouse.getX()-88,love.mouse.getY()-14}
 	end
 end
 

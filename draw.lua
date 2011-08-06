@@ -68,10 +68,6 @@ function drawPlayer()
 		love.graphics.drawq(imgTiles,quad[12],num_pat*CELLW,0)
 	end
 	love.graphics.pop()
-	-- draw hover
-	if hover ~= nil then
-		drawTextBox(hover[1],hover[2],hover[3])
-	end
 	-- draw song editor
 	if song_scroll == 0 then
 		love.graphics.drawq(imgTiles,quad[31],(SONG_OFF_X-1)*CELLW,SONG_OFF_Y*CELLH)
@@ -103,6 +99,11 @@ function drawPlayer()
 		if i+song_scroll < song_len then
 			love.graphics.print(song[i+song_scroll],(SONG_OFF_X+i)*CELLW+6,SONG_OFF_Y*CELLH+4)
 		end
+	end
+	-- draw hover
+	love.graphics.setColor(255,255,255,255)
+	if hover ~= nil then
+		drawTextBox(hover[1],hover[2],hover[3])
 	end
 end
 

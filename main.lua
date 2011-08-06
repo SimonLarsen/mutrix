@@ -3,7 +3,7 @@ require("defines")
 require("utils")
 require("export")
 require("draw")
-require("events")
+require("update")
 
 function love.load()
 	time = 0
