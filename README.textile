@@ -26,3 +26,5 @@ h3. Song editor
 * Press return to play the entire song end press return again to stop it
 * Press 'e' or click the icon next to the song editor to export song to midi file.
 The song will be written to 'export.mid' in the folder you stored mutrix.love.
+
+!https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6-hover.png!
