@@ -12,7 +12,7 @@ h3. Instruments
 
 h3. Patterns
 
-* Press the '+'-icon or the '+'-key on your keyboard to add a new pattern.
+* Press the '+'-icon or the '+'-key on your keyboard to add a new pattern, and press the '-'-key (minus) to delete the last pattern.
 * Click on a pattern number or the equivalent number key on your keyboard to select it.
 * Right click a pattern number to delete it.
 * Ctrl-click a pattern number to duplicate it (added as last pattern.)
@@ -20,11 +20,9 @@ h3. Patterns
 
 h3. Song editor
 
-* Press the song editor (bottom row) to select it
-* Use the numbers 1-9 to add the corresponding pattern to the song
-* Use delete and backspace to delete the selected or preceding song block (much like in a text editor)
-* Press return to play the entire song end press return again to stop it
+* Press the song editor (bottom row) to select it.
+* Use the numbers 1-9 to add the corresponding pattern to the song.
+* Use delete and backspace to delete the selected or preceding song block (much like in a text editor).
+* Press return to play the entire song end press return again to stop it.
 * Press 'e' or click the icon next to the song editor to export song to midi file.
 The song will be written to 'export.mid' in the folder you stored mutrix.love.
-
-!https://a248.e.akamai.net/assets.github.com/images/modules/header/logov6-hover.png!
