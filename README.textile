@@ -29,3 +29,10 @@ h3. Song editor
 
 
 Note: The resulting midi will not sound like the ingame music but can be imported to a sequencer (like "LMMS":http://lmms.sourceforge.net/ or "GXSCC":http://www.geocities.co.jp/SiliconValley-SanJose/8700/P/GsorigE.htm) to spice it up.
+
+h1. Licence
+
+Mütrix is released under "GPLv3":http://www.gnu.org/licenses/gpl.txt licence.
+
+It uses the LÖVE framework which is released under "ZLIB":http://love2d.org/wiki/License licence.
+
