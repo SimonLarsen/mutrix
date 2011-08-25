@@ -27,5 +27,5 @@ h3. Song editor
 * Press 'e' or click the floppy disc icon next to the song editor to export your song to a midi file.
   The song will be written to the given filename in the folder you've stored mutrix.love/mutrix.exe.
 
-Note: The resulting midi will not sound like the ingame music but can be imported to a sequencer (like "LMMS":http://lmms.sourceforge.net/ or "GXSCC":http://www.geocities.co.jp/SiliconValley-SanJose/8700/P/GsorigE.htm)
-to spice it up.
+
+Note: The resulting midi will not sound like the ingame music but can be imported to a sequencer (like "LMMS":http://lmms.sourceforge.net/ or "GXSCC":http://www.geocities.co.jp/SiliconValley-SanJose/8700/P/GsorigE.htm) to spice it up.
