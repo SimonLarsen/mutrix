@@ -33,6 +33,7 @@ Note: The resulting midi will not sound like the ingame music but can be importe
 h1. Licence
 
 Mütrix is released under "GPLv3":http://www.gnu.org/licenses/gpl.txt licence.
+The source code for Mütrix can be found at "https://github.com/SimonLarsen/mutrix":https://github.com/SimonLarsen/mutrix.
 
 It uses the LÖVE framework which is released under "ZLIB":http://love2d.org/wiki/License licence.
 
