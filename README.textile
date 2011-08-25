@@ -6,23 +6,26 @@ h3. Instruments
 
 * Fill cells with left mouse button, remove with right.
 * Scroll mouse wheel to move entire matrix up or down (works only for piano and bass.)
-* Press on each instrument's icon to clear them.
-* Press c to clear all instruments.
-* Press play to start and stop the player
+* Click on each instrument's icon to clear them.
+* Press 'c' to clear all instruments in the current pattern.
+* Press 'space' to start and stop the player.
 
 h3. Patterns
 
 * Press the '+'-icon or the '+'-key on your keyboard to add a new pattern, and press the '-'-key (minus) to delete the last pattern.
 * Click on a pattern number or the equivalent number key on your keyboard to select it.
 * Right click a pattern number to delete it.
-* Ctrl-click a pattern number to duplicate it (added as last pattern.)
-* Press ctrl+c to copy the active pattern and press ctrl+v in another pattern to paste it.
+* Ctrl-click a pattern number to duplicate it. (appends to end of song)
+* Press 'ctrl+c' to copy the active pattern and press 'ctrl+v' in another pattern to paste it.
 
 h3. Song editor
 
-* Press the song editor (bottom row) to select it.
+* Click the song editor (bottom row) to select it.
 * Use the numbers 1-9 to add the corresponding pattern to the song.
-* Use delete and backspace to delete the selected or preceding song block (much like in a text editor).
-* Press return to play the entire song end press return again to stop it.
-* Press 'e' or click the icon next to the song editor to export song to midi file.
-The song will be written to 'export.mid' in the folder you stored mutrix.love.
+* Use delete and backspace to delete the selected or preceding song block (much like in a text editor)
+* Press 'return' to play the entire song end press return again to stop it.
+* Press 'e' or click the floppy disc icon next to the song editor to export your song to a midi file.
+  The song will be written to the given filename in the folder you've stored mutrix.love/mutrix.exe.
+
+Note: The resulting midi will not sound like the ingame music but can be imported to a sequencer (like "LMMS":http://lmms.sourceforge.net/ or "GXSCC":http://www.geocities.co.jp/SiliconValley-SanJose/8700/P/GsorigE.htm)
+to spice it up.
