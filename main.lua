@@ -41,11 +41,21 @@ function love.draw()
 	end
 end
 
-function love.keypressed(k,unicode)
+function love.keypressed(k, unicode)
 	if state == 1 or state == 2 then
-		keyPressedPlayer(k,unicode)
+		keyPressedPlayer(k, 0)
 	elseif state == 3 then
-		keyPressedSave(k,unicode)
+		keyPressedSave(k, 0)
+	end
+end
+
+function love.textinput(text)
+	local uni = text:byte(1)
+	if state == 1 or state == 2 then
+		keyPressedPlayer("", uni)
+	elseif
+		state == 3 then
+		keyPressedSave("", uni)
 	end
 end
 
